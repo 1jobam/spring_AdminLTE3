@@ -45,6 +45,23 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+<!-- 	<filter>
+		<filter-name>loginCheckFilter</filter-name>
+		<filter-class>com.spring.controller.LoginCheckFilter</filter-class>
+		<init-param>
+			<param-name>exclude</param-name>
+			<param-value>resources,commons,.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>viewResolver</param-name>
+			<param-value>com.spring.util.ViewResolver</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</filter>
+	<filter-mapping>
+		<filter-name>loginCheckFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 	
 	<filter>
 		<filter-name>sitemesh</filter-name>

@@ -12,7 +12,7 @@ public class GetUploadPath {
 	private static Properties properties = new Properties();
 	
 	static {
-		String resource = "com/jsp/properties/uploadPath.properties";
+		String resource = "com/spring/properties/uploadPath.properties";
 		
 		try {
 			Reader reader = Resources.getResourceAsReader(resource);

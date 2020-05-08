@@ -46,9 +46,22 @@ var printData=function(replyArr,target,templateObject){
 	
 //reply list
 function getPage(pageInfo){	 
-	$.getJSON(pageInfo,function(data){	
+/* 	$.getJSON(pageInfo,function(data){	
 		printData(data.replyList,$('#repliesDiv'),$('#reply-list-template'));
 		printPaging(data.pageMaker,$('.pagination'));		
+	}); */
+	
+	$.ajax({
+		url : pageInfo,
+		type : "get",
+		success:function(dataMap){
+			printData(dataMap.replyList,$('#repliesDiv'),$('#reply-list-template'));
+			printPaging(dataMap.pageMaker,$('.pagination'));		
+		},
+		error:function(error){
+// 			alert("리스트를 불러오는데 실패하셨습니다");
+			alert("서버장애로 댓글 목록이 생략됩니다.");
+		}
 	});
 }
 
@@ -111,14 +124,13 @@ $('#replyAddBtn').on('click',function(e){
 		dataType:"text", //받는 data 형식 지정
 		
 		success:function(data){
-			var result=data.split(',');
-			if(result[0]=="SUCCESS"){
-				alert('댓글이 등록되었습니다.');	
-				getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+result[1]);
-				$('#newReplyText').val("");
-			}else{
-				alert('댓글 등록이 취소되었습니다.');
-			}			
+			alert('댓글이 등록되었습니다.');	
+			getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+data);
+			$('#newReplyText').val("");	
+		},
+		error:function(error){
+			alert('댓글 등록이 취소되었습니다.');
+			window.location.reload(true);
 		}
 	});
 	
@@ -156,13 +168,13 @@ $('#replyModBtn').on('click',function(event){
 		url:"<%=request.getContextPath()%>/replies/modify.do",
 		type:"post",
 		data:JSON.stringify(sendData),
+		contentType:"application/json", //보내는 data 형식 지정
 		success:function(result){
-			if(result=="SUCCESS"){
-				alert("수정되었습니다.");			
-				getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+replyPage);
-			}else{
-				alert("수정이 실패했습니다.");
-			}
+			alert("수정되었습니다.");			
+			getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+replyPage);
+		},
+		error:function(error){
+			alert("수정이 실패했습니다.");
 		},
 		complete:function(){
 			$('#modifyModal').modal('hide');
@@ -185,12 +197,10 @@ $('#replyDelBtn').on('click',function(event){
 		url:"<%=request.getContextPath()%>/replies/remove.do",
 		type:"post",
 		data:JSON.stringify(sendData),
-		success:function(data){
-			var result = data.split(",");
-			if(result[0]=="SUCCESS"){
-				alert("삭제되었습니다.");
-				getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+result[1]);
-			}
+		contentType:"application/json", //보내는 data 형식 지정
+		success:function(page){
+			alert("삭제되었습니다.");
+			getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+page);
 		},
 		error:function(){
 			alert("삭제실패...");

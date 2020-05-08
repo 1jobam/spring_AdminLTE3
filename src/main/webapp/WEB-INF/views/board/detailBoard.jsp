@@ -56,7 +56,7 @@
 												
 					</div>
 					<div class="card-footer">
-						<c:if test="${'mimi' eq board.writer }">
+						<c:if test="${loginUser.id eq board.writer }">
 						<button type="button" id="modifyBtn" class="btn btn-warning">MODIFY</button>						
 					    <button type="button" id="removeBtn" class="btn btn-danger">REMOVE</button>
 					    </c:if>
